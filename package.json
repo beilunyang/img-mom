@@ -1,0 +1,27 @@
+{
+  "name": "img-mom",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "build": "webpack --progress"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230419.0",
+    "itty-router": "^3.0.12",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.2.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "wrangler": "^3.28.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.504.0",
+    "@cfworker/web": "^1.14.0",
+    "cfworker-middleware-telegraf": "^2.0.2",
+    "telegraf": "^4.15.0"
+  }
+}
