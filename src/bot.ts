@@ -2,6 +2,12 @@ import { Telegraf, Markup } from 'telegraf';
 import BackblazeB2 from './oss/backblazeB2';
 import CloudflareR2 from './oss/cloudflareR2';
 import { isAt, isInGroup, isOwner } from './utils';
+import { OSSProvider } from './oss/interface';
+
+const supportProviders: Record<string, new () => OSSProvider> = {
+	BackblazeB2,
+	CloudflareR2,
+};
 
 const bot = new Telegraf(self.TG_BOT_TOKEN);
 
@@ -34,8 +40,7 @@ bot.help(async (ctx) => {
 bot.command('settings', async (ctx) => {
 	const keyboard = Markup.inlineKeyboard(
 		[
-			Markup.button.callback('BackblazeB2', 'BackblazeB2'),
-			Markup.button.callback('CloudflareR2', 'CloudflareR2'),
+			...Object.keys(supportProviders).map(provider => Markup.button.callback(provider, provider)),
 			Markup.button.callback('None', 'None')
 		]
 	);
@@ -47,17 +52,12 @@ bot.command('settings', async (ctx) => {
 
 bot.on('callback_query', async (ctx) => {
 	const provider = (ctx.callbackQuery as any).data;
-	const key = `oss_provider_${ctx.callbackQuery.from.username}`
-	switch (provider) {
-		case 'None':
-			self.KV_IMG_MOM.delete(key);
-			break;
-		case 'BackblazeB2':
-			self.KV_IMG_MOM.put(key, 'BackblazeB2');
-			break;
-		case 'CloudflareR2':
-			self.KV_IMG_MOM.put(key, 'CloudflareR2');
-			break;
+	const key = `oss_provider_${ctx.callbackQuery.from.username}`;
+
+	if (provider === 'None') {
+		self.KV_IMG_MOM.delete(key);
+	} else {
+		self.KV_IMG_MOM.put(key, provider);
 	}
 	return ctx.reply(`Ok. Successfully set oss provider (${provider})`);
 })
@@ -83,15 +83,10 @@ bot.on('photo', async (ctx) => {
 	}
 
 	let provider;
-	const providerName = await self.KV_IMG_MOM.get(`oss_provider_${ctx.message.from.username}`);
-	switch (providerName) {
-		case 'BackblazeB2':
-			provider = new BackblazeB2();
-			break;
-		case 'CloudflareR2':
-			provider = new CloudflareR2();
-			break;
-		default:
+	const providerName = await self.KV_IMG_MOM.get(`oss_provider_${ctx.message.from.username}`) ?? '';
+	const providerClass = supportProviders[providerName];
+	if (providerClass) {
+		provider = new providerClass();
 	}
 
 	if (!provider) {
