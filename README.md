@@ -1,6 +1,6 @@
 <div align="center">
+	<img height="180" src="https://pic.otaku.ren/20240320/AQADuroxGzAf2Vd9.jpg" alt="logo" />
   <h1 align="center">img-mom | 图片老妈</h1>
-
   <p align="center">
 		Telegram 图片上传机器人，轻松上传图片到指定图床并获取外链地址
   </p>
@@ -106,7 +106,6 @@ bucket_name = "<string>"
 
 ## 待办项
 - [ ]  英文文档
-- [ ]  项目 Logo
 - [ ]  更多图床
 
 ## 贡献
