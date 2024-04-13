@@ -1,0 +1,29 @@
+name: Deploy to Cloudflare Workers
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy_worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          cp wrangler.example.toml wrangler.toml
+          sed -i 's/account_id = ""/account_id = "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"/' wrangler.toml
+          sed -i 's/TG_BOT_TOKEN = ""/TG_BOT_TOKEN = "${{ secrets.TG_BOT_TOKEN }}"/' wrangler.toml
+          sed -i 's/TG_WEBHOOK_SECRET_TOKEN = ""/TG_WEBHOOK_SECRET_TOKEN = "${{ secrets.TG_WEBHOOK_SECRET_TOKEN }}"/' wrangler.toml
+          sed -i 's/TG_BOT_OWNER_USERNAME = ""/TG_BOT_OWNER_USERNAME = "${{ secrets.TG_BOT_OWNER_USERNAME }}"/' wrangler.toml
+          sed -i 's/TG_BOT_ALLOW_ANYONE = ""/TG_BOT_ALLOW_ANYONE = "${{ secrets.TG_BOT_ALLOW_ANYONE }}"/' wrangler.toml
+          sed -i 's/R2_CUSTOM_DOMAIN = ""/R2_CUSTOM_DOMAIN = "${{ secrets.CLOUDFLARE_R2_CUSTOM_DOMAIN }}"/' wrangler.toml
+          sed -i 's/id = ""/id = "${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}"/' wrangler.toml
+          sed -i 's/bucket_name = ""/bucket_name = "${{ secrets.CLOUDFLARE_BUCKET_NAME }}"/' wrangler.toml
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+      - run: npm install
+      - run: npm run build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: deploy --var VERSION:${{ github.sha }}
