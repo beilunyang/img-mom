@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+  repository_dispatch:
+   
 jobs:
   deploy_worker:
     runs-on: ubuntu-latest
@@ -18,6 +21,11 @@ jobs:
           sed -i 's/R2_CUSTOM_DOMAIN = ""/R2_CUSTOM_DOMAIN = "${{ secrets.CLOUDFLARE_R2_CUSTOM_DOMAIN }}"/' wrangler.toml
           sed -i 's/id = ""/id = "${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}"/' wrangler.toml
           sed -i 's/bucket_name = ""/bucket_name = "${{ secrets.CLOUDFLARE_BUCKET_NAME }}"/' wrangler.toml
+          sed -i 's/B2_KEY_ID = ""/B2_KEY_ID = "${{ secrets.BACKBLACE_B2_KEY_ID }}"/' wrangler.toml
+          sed -i 's/B2_SECRET_KEY = ""/B2_SECRET_KEY = "${{ secrets.BACKBLACE_B2_SECRET_KEY }}"/' wrangler.toml
+          sed -i 's/B2_ENDPOINT = ""/B2_ENDPOINT = "${{ secrets.BACKBLACE_B2_ENDPOINT }}"/' wrangler.toml
+          sed -i 's/B2_BUCKET = ""/B2_BUCKET = "${{ secrets.BACKBLACE_B2_BUCKET }}"/' wrangler.toml
+          sed -i 's/B2_CUSTOM_DOMAIN = ""/B2_CUSTOM_DOMAIN = "${{ secrets.BACKBLACE_B2_CUSTOM_DOMAIN }}"/' wrangler.toml
       - uses: actions/setup-node@v4
         with:
           node-version-file: package.json
