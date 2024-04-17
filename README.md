@@ -108,20 +108,20 @@ bucket_name = "<string>"
 
 要使用 GitHub Actions 部署 Cloudflare Workers，需要在 GitHub 仓库中设置以下 Secrets：
 
-1. CLOUDFLARE_ACCOUNT_ID: Your Cloudflare account ID.
-2. TG_BOT_TOKEN: Your Telegram bot token.
-3. TG_WEBHOOK_SECRET_TOKEN: A secret token for the Telegram webhook.
-4. TG_BOT_OWNER_USERNAME: The username of the Telegram bot owner.
-5. TG_BOT_ALLOW_ANYONE: Configuration to allow anyone to use the Telegram bot.
-6. CLOUDFLARE_R2_CUSTOM_DOMAIN: Custom domain for your Cloudflare R2 storage.
-7. CLOUDFLARE_KV_NAMESPACE_ID: The namespace ID for your Cloudflare KV storage.
-8. CLOUDFLARE_BUCKET_NAME: The bucket name for your Cloudflare storage.
-9. BACKBLACE_B2_KEY_ID: Your Backblaze B2 key ID.
-10. BACKBLACE_B2_SECRET_KEY: Your Backblaze B2 secret key.
-11. BACKBLACE_B2_ENDPOINT: The endpoint for your Backblaze B2 storage.
-12. BACKBLACE_B2_BUCKET: The bucket name for your Backblaze B2 storage.
-13. BACKBLACE_B2_CUSTOM_DOMAIN: Custom domain for your Backblaze B2 storage.
-14. CLOUDFLARE_API_TOKEN: Your Cloudflare API token.
+1. `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID.
+2. `TG_BOT_TOKEN`: Your Telegram bot token.
+3. `TG_WEBHOOK_SECRET_TOKEN`: A secret token for the Telegram webhook.
+4. `TG_BOT_OWNER_USERNAME`: The username of the Telegram bot owner.
+5. `TG_BOT_ALLOW_ANYONE`: Configuration to allow anyone to use the Telegram bot.
+6. `CLOUDFLARE_R2_CUSTOM_DOMAIN`: Custom domain for your Cloudflare R2 storage.
+7. `CLOUDFLARE_KV_NAMESPACE_ID`: The namespace ID for your Cloudflare KV storage.
+8. `CLOUDFLARE_BUCKET_NAME`: The bucket name for your Cloudflare storage.
+9. `BACKBLACE_B2_KEY_ID`: Your Backblaze B2 key ID.
+10. `BACKBLACE_B2_SECRET_KEY`: Your Backblaze B2 secret key.
+11. `BACKBLACE_B2_ENDPOINT`: The endpoint for your Backblaze B2 storage.
+12. `BACKBLACE_B2_BUCKET`: The bucket name for your Backblaze B2 storage.
+13. `BACKBLACE_B2_CUSTOM_DOMAIN`: Custom domain for your Backblaze B2 storage.
+14. `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token.
 
 ### 如何设置Secrets
 
@@ -133,7 +133,7 @@ bucket_name = "<string>"
 
 配置好后，当推送代码到 master 分支、发起 pull request 或触发 repository dispatch 事件时，GitHub Actions 工作流将会使用这些 Secrets 动态生成 wrangler.toml 配置文件并自动部署您的 Cloudflare Worker。
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/FYLSen/img-mom)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/beilunyang/img-mom)
 
 ## 待办项
 - [ ]  英文文档
