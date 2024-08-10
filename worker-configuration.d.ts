@@ -11,6 +11,7 @@ interface Env {
 	TG_BOT_OWNER_USERNAME: string;
 	TG_BOT_ALLOW_ANYONE: boolean | string;
 	TG_WEBHOOK_SECRET_TOKEN: string;
+	ENVIRONMENT?: 'production'
 }
 
 interface ServiceWorkerGlobalScope extends Env {

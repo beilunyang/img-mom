@@ -1,0 +1,25 @@
+name = "img-mom"
+compatibility_date = "2024-08-10"
+
+account_id = ""
+
+[vars]
+TG_BOT_TOKEN = "6962306001:AAFOEXEHtFnhn81blO1h9w2-0Abg5hgofXo"
+TG_WEBHOOK_SECRET_TOKEN = "example123456"
+TG_BOT_OWNER_USERNAME = "beilunyang"
+TG_BOT_ALLOW_ANYONE = "true"
+
+R2_CUSTOM_DOMAIN = "pic.otaku.ren"
+B2_KEY_ID = "0045cc8f0f2727f0000000004"
+B2_SECRET_KEY = "K004zO0p3OmpNF6LLY03sbPiZDENRKU"
+B2_ENDPOINT = "s3.us-west-004.backblazeb2.com"
+B2_BUCKET = "bitibiti-img"
+B2_CUSTOM_DOMAIN = "img.otaku.ren"
+
+[[kv_namespaces]]
+binding = "KV_IMG_MOM"
+id = "fa94828793b343218d45d113c5caf450"
+
+[[r2_buckets]]
+binding = "R2_IMG_MOM"
+bucket_name = "bitibiti-img"

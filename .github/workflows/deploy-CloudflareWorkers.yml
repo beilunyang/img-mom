@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - master
-  pull_request:
-  repository_dispatch:
-   
+
 jobs:
   deploy_worker:
     runs-on: ubuntu-latest
@@ -30,8 +28,7 @@ jobs:
         with:
           node-version-file: package.json
       - run: npm install
-      - run: npm run build
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy --var VERSION:${{ github.sha }}
+          command: deploy --var VERSION:${{ github.sha }} --minify src/index.ts

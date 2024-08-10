@@ -1,57 +1,49 @@
-import { Application, Router } from '@cfworker/web';
-import createTelegrafMiddleware from 'cfworker-middleware-telegraf';
+import { Hono } from 'hono';
+import { webhookCallback } from 'grammy/web';
 import bot from './bot';
 
-const router = new Router();
+const app = new Hono();
 
-router.post('/bot', (ctx, next) => {
-	const webhookSecretToken = ctx.req.headers.get('X-Telegram-Bot-Api-Secret-Token');
-	if (self.TG_WEBHOOK_SECRET_TOKEN && webhookSecretToken !== self.TG_WEBHOOK_SECRET_TOKEN) {
-		ctx.res.status = 401;
-		return;
-	}
-	self.host = ctx.req.url.host;
+app.post('/bot', async (ctx, next) => {
+	self.host = new URL(ctx.req.url).host;
 	return next();
-}, createTelegrafMiddleware(bot));
+}, webhookCallback(bot, 'hono', {
+	secretToken: self.TG_WEBHOOK_SECRET_TOKEN
+}));
 
-router.get('/setup', async (ctx) => {
+app.get('/setup', async (ctx) => {
 	const webhookHost = await self.KV_IMG_MOM.get('webhookHost');
 	if (!webhookHost) {
-		const host = ctx.req.url.host;
+		const host = new URL(ctx.req.url).host;
   	const botUrl = `https://${host}/bot`;
-		await bot.telegram.setWebhook(botUrl, {
+		await bot.api.setWebhook(botUrl, {
 			secret_token: self.TG_WEBHOOK_SECRET_TOKEN,
 		});
-		await bot.telegram.setMyCommands([{
+		await bot.api.setMyCommands([{
 			command: '/settings',
 			description: 'Setting up the bot',
 		}]);
 		await self.KV_IMG_MOM.put('webhookHost', host);
-  	ctx.res.body = `Webhook(${botUrl}) setup successful`;
-		return;
+  	return ctx.text(`Webhook(${botUrl}) setup successful`);
 	}
-	ctx.res.status = 401;
+	return ctx.text('401 Unauthorized. Please visit ImgMom docs (https://github.com/beilunyang/img-mom)', 401)
 });
 
-router.get('/', (ctx) => {
-  ctx.res.body = "Hello ImgMom (https://github.com/beilunyang/img-mom)";
-})
-
-router.get('/img/:fileName', async (ctx) => {
-	const fileName = ctx.req.params.fileName;
-
-	const res = await fetch(`https://api.telegram.org/file/bot${self.TG_BOT_TOKEN}/photos/${fileName}`);
+app.get('/img/:fileId', async (ctx) => {
+	const fileId = ctx.req.param('fileId');
+	const file = await bot.api.getFile(fileId)
+	const res = await fetch(`https://api.telegram.org/file/bot${self.TG_BOT_TOKEN}/${file.file_path}`);
 	if (!res.ok) {
-		ctx.res.status = 404;
-		return;
+  	return ctx.text('404 Not Found. Please visit ImgMom docs (https://github.com/beilunyang/img-mom)', 404);
 	}
 
-	const fileType = fileName.split('.').pop();
-	ctx.res.type = `image/${fileType}`;
-	ctx.res.body = await res.arrayBuffer();
-})
+	const fileType = file.file_path?.split('.').pop() ?? '';
 
+	return ctx.body(await res.arrayBuffer(), 200, {
+		'Content-Type': `image/${fileType}`
+	});
+});
 
+app.get('/', (ctx) => ctx.text('Hello ImgMom (https://github.com/beilunyang/img-mom)'));
 
-new Application().use(router.middleware).listen();
-
+app.fire()
