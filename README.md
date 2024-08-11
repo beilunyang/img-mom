@@ -108,20 +108,20 @@ bucket_name = "<string>"
 
 要使用 GitHub Actions 部署 Cloudflare Workers，需要在 GitHub 仓库中设置以下 Secrets：
 
-1. `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID.
-2. `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token.
-3. `TG_BOT_TOKEN`: Your Telegram bot token.
-4. `TG_WEBHOOK_SECRET_TOKEN`: A secret token for the Telegram webhook.
-5. `TG_BOT_OWNER_USERNAME`: The username of the Telegram bot owner.
-6. `TG_BOT_ALLOW_ANYONE`: Configuration to allow anyone to use the Telegram bot.
-7. `CLOUDFLARE_R2_CUSTOM_DOMAIN`: Custom domain for your Cloudflare R2 storage.
-8. `CLOUDFLARE_KV_NAMESPACE_ID`: The namespace ID for your Cloudflare KV storage.
-9. `CLOUDFLARE_BUCKET_NAME`: The bucket name for your Cloudflare storage.
-10. `BACKBLACE_B2_KEY_ID`: Your Backblaze B2 key ID.
-11. `BACKBLACE_B2_SECRET_KEY`: Your Backblaze B2 secret key.
-12. `BACKBLACE_B2_ENDPOINT`: The endpoint for your Backblaze B2 storage.
-13. `BACKBLACE_B2_BUCKET`: The bucket name for your Backblaze B2 storage.
-14. `BACKBLACE_B2_CUSTOM_DOMAIN`: Custom domain for your Backblaze B2 storage.
+- `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID.
+- `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token.
+- `CLOUDFLARE_KV_NAMESPACE_ID`: The namespace ID for your Cloudflare KV storage.
+- `CLOUDFLARE_BUCKET_NAME`: The bucket name for your Cloudflare storage.
+- `R2_CUSTOM_DOMAIN`: Custom domain for your Cloudflare R2 storage.
+- `TG_BOT_TOKEN`: Your Telegram bot token.
+- `TG_WEBHOOK_SECRET_TOKEN`: A secret token for the Telegram webhook.
+- `TG_BOT_OWNER_USERNAME`: The username of the Telegram bot owner.
+- `TG_BOT_ALLOW_ANYONE`: Configuration to allow anyone to use the Telegram bot.
+- `B2_KEY_ID`: Your Backblaze B2 key ID.
+- `B2_SECRET_KEY`: Your Backblaze B2 secret key.
+- `B2_ENDPOINT`: The endpoint for your Backblaze B2 storage.
+- `B2_BUCKET`: The bucket name for your Backblaze B2 storage.
+- `B2_CUSTOM_DOMAIN`: Custom domain for your Backblaze B2 storage.
 
 ### 如何设置 Secrets
 

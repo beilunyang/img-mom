@@ -2,6 +2,9 @@
   "name": "img-mom",
   "version": "0.1.0",
   "private": true,
+	"engines": {
+		"node": ">=20.0.0"
+	},
   "scripts": {
     "dev": "wrangler dev src/index.ts",
     "tunnel": "cloudflared tunnel --url http://127.0.0.1:8787",
