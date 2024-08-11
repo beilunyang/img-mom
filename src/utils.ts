@@ -1,3 +1,5 @@
+import { Message } from "grammy/types";
+
 export const genDateDirName = () => {
 	const date = new Date();
 	const t = (val: number) => {
@@ -13,16 +15,7 @@ export const isOwner = (username?: string) => {
 	return username === self.TG_BOT_OWNER_USERNAME;
 }
 
-export const isInGroup = (message: any) => {
-	const chatType = message?.chat?.type;
-	return ['group', 'supergroup'].includes(chatType)
-}
-
-export const isAt = (message: any, botName: string) => {
-	const mentions = message?.caption_entities?.filter?.((entity: any) => entity?.type === 'mention');
-	const caption = message?.caption;
-	return !!mentions?.some?.((mention: any) => {
-		const atUserName = caption.slice(mention.offset, mention.length + mention.offset);
-		return atUserName === `@${botName}`;
-	})
+export const isInPrivateChat = (message: Message) => {
+	const chatType = message.chat.type;
+	return chatType === 'private'
 }

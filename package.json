@@ -1,27 +1,21 @@
 {
   "name": "img-mom",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "start": "wrangler dev",
-    "build": "webpack --progress"
+    "dev": "wrangler dev src/index.ts",
+    "tunnel": "cloudflared tunnel --url http://127.0.0.1:8787",
+    "deploy": "wrangler deploy --minify src/index.ts"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20230419.0",
-    "itty-router": "^3.0.12",
-    "node-polyfill-webpack-plugin": "^2.0.1",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.2.2",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
-    "wrangler": "^3.28.1"
+    "@cloudflare/workers-types": "^4.20240806.0",
+    "cloudflared": "^0.5.3",
+    "typescript": "^5.5.2",
+    "wrangler": "^3.60.3"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.504.0",
-    "@cfworker/web": "^1.14.0",
-    "cfworker-middleware-telegraf": "^2.0.2",
-    "telegraf": "^4.15.0"
+    "@aws-sdk/client-s3": "^3.627.0",
+    "grammy": "^1.28.0",
+    "hono": "^4.5.4"
   }
 }

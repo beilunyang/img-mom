@@ -109,29 +109,29 @@ bucket_name = "<string>"
 要使用 GitHub Actions 部署 Cloudflare Workers，需要在 GitHub 仓库中设置以下 Secrets：
 
 1. `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID.
-2. `TG_BOT_TOKEN`: Your Telegram bot token.
-3. `TG_WEBHOOK_SECRET_TOKEN`: A secret token for the Telegram webhook.
-4. `TG_BOT_OWNER_USERNAME`: The username of the Telegram bot owner.
-5. `TG_BOT_ALLOW_ANYONE`: Configuration to allow anyone to use the Telegram bot.
-6. `CLOUDFLARE_R2_CUSTOM_DOMAIN`: Custom domain for your Cloudflare R2 storage.
-7. `CLOUDFLARE_KV_NAMESPACE_ID`: The namespace ID for your Cloudflare KV storage.
-8. `CLOUDFLARE_BUCKET_NAME`: The bucket name for your Cloudflare storage.
-9. `BACKBLACE_B2_KEY_ID`: Your Backblaze B2 key ID.
-10. `BACKBLACE_B2_SECRET_KEY`: Your Backblaze B2 secret key.
-11. `BACKBLACE_B2_ENDPOINT`: The endpoint for your Backblaze B2 storage.
-12. `BACKBLACE_B2_BUCKET`: The bucket name for your Backblaze B2 storage.
-13. `BACKBLACE_B2_CUSTOM_DOMAIN`: Custom domain for your Backblaze B2 storage.
-14. `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token.
+2. `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token.
+3. `TG_BOT_TOKEN`: Your Telegram bot token.
+4. `TG_WEBHOOK_SECRET_TOKEN`: A secret token for the Telegram webhook.
+5. `TG_BOT_OWNER_USERNAME`: The username of the Telegram bot owner.
+6. `TG_BOT_ALLOW_ANYONE`: Configuration to allow anyone to use the Telegram bot.
+7. `CLOUDFLARE_R2_CUSTOM_DOMAIN`: Custom domain for your Cloudflare R2 storage.
+8. `CLOUDFLARE_KV_NAMESPACE_ID`: The namespace ID for your Cloudflare KV storage.
+9. `CLOUDFLARE_BUCKET_NAME`: The bucket name for your Cloudflare storage.
+10. `BACKBLACE_B2_KEY_ID`: Your Backblaze B2 key ID.
+11. `BACKBLACE_B2_SECRET_KEY`: Your Backblaze B2 secret key.
+12. `BACKBLACE_B2_ENDPOINT`: The endpoint for your Backblaze B2 storage.
+13. `BACKBLACE_B2_BUCKET`: The bucket name for your Backblaze B2 storage.
+14. `BACKBLACE_B2_CUSTOM_DOMAIN`: Custom domain for your Backblaze B2 storage.
 
-### 如何设置Secrets
+### 如何设置 Secrets
 
 1. 访问您的 GitHub 仓库。
-2. 点击 'Settings' > 'Secrets and variables' > 'Actions' > 'New repository secret'（新建仓库密钥）。
-3. 按照上面列出的密钥添加每个 'Name' 和 'Secret' 并填入相应的值。
+2. 点击 `Settings` > `Secrets and variables` > `Actions` > `New repository secret`（新建仓库密钥）。
+3. 按照上面列出的密钥添加每个 Name 和 Secret 并填入相应的值。
 
 请确保替换为实际的 Cloudflare 和 Backblaze B2 账户详情。
 
-配置好后，当推送代码到 master 分支、发起 pull request 或触发 repository dispatch 事件时，GitHub Actions 工作流将会使用这些 Secrets 动态生成 wrangler.toml 配置文件并自动部署您的 Cloudflare Worker。
+配置好后，当推送代码到 master 分支，GitHub Actions 工作流将会使用这些 Secrets 动态生成 wrangler.toml 配置文件并自动部署您的 Cloudflare Worker。
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/beilunyang/img-mom)
 
@@ -144,9 +144,11 @@ bucket_name = "<string>"
 2. 基于 master 分支 checkout 你的开发分支
 3. 配置 wrangler.toml
 4. 安装依赖并本地运行
-	```
+	```bash
 	npm install
 	npm run dev
+	# 使用 Cloudflare tunnels 进行内网穿透
+	npm run tunnel
 	```
 	注意：由于该项目是作为 Telegram Bot 的 Webhook 后端，本地运行该项目无法让 Telegram Bot 访问，所以需要进行内网穿透，让本地运行的服务能够通过外网访问。（推荐使用 Cloudflare tunnels 进行免费内网穿透，当然也可以使用 ngrok 等服务）
 5. 浏览器打开 `https://<域名>/setup`， 完成必要的 Webhook 初始化

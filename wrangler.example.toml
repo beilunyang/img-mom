@@ -1,12 +1,8 @@
 name = "img-mom"
-main = "dist/worker.js"
-compatibility_date = "2024-02-11"
+compatibility_date = "2024-08-10"
 
 account_id = ""
 
-# Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
-# Note: Use secrets to store sensitive data.
-# Docs: https://developers.cloudflare.com/workers/platform/environment-variables
 [vars]
 TG_BOT_TOKEN = ""
 TG_WEBHOOK_SECRET_TOKEN = ""
@@ -20,17 +16,10 @@ B2_ENDPOINT = ""
 B2_BUCKET = ""
 B2_CUSTOM_DOMAIN = ""
 
-# Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
-# Docs: https://developers.cloudflare.com/workers/runtime-apis/kv
 [[kv_namespaces]]
 binding = "KV_IMG_MOM"
 id = ""
 
-# Bind an R2 Bucket. Use R2 to store arbitrarily large blobs of data, such as files.
-# Docs: https://developers.cloudflare.com/r2/api/workers/workers-api-usage/
 [[r2_buckets]]
 binding = "R2_IMG_MOM"
 bucket_name = ""
-
-[build]
-command = "npm run build"
