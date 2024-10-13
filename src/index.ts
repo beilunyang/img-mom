@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { webhookCallback } from 'grammy/web';
 import bot from './bot';
+import { fileTypeFromBuffer } from 'file-type'
 
 const app = new Hono();
 
@@ -37,10 +38,12 @@ app.get('/img/:fileId', async (ctx) => {
   	return ctx.text('404 Not Found. Please visit ImgMom docs (https://github.com/beilunyang/img-mom)', 404);
 	}
 
-	const fileType = file.file_path?.split('.').pop() ?? '';
+	const bf = await res.arrayBuffer()
 
-	return ctx.body(await res.arrayBuffer(), 200, {
-		'Content-Type': `image/${fileType}`
+	const fileType = await fileTypeFromBuffer(bf)
+
+	return ctx.body(bf, 200, {
+		'Content-Type': fileType?.mime ?? '',
 	});
 });
 
