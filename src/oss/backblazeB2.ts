@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 import { OSSProvider } from './interface';
 import { genDateDirName } from '../utils';
 
@@ -16,8 +16,8 @@ class BackblazeB2 implements OSSProvider {
 		});
 	}
 
-	async uploadImage(data: any, fileName: string, fileType: string) {
-		const filePath = `${genDateDirName()}/${fileName}.${fileType}`;
+	async uploadImage(data: any, fileName: string, fileType: string, customPath?: string) {
+		const filePath = customPath || `${genDateDirName()}/${fileName}.${fileType}`;
 		await this.client.send(new PutObjectCommand({
 			Bucket: self.B2_BUCKET,
 			Key: filePath,
@@ -25,6 +25,18 @@ class BackblazeB2 implements OSSProvider {
 			ContentType: `image/${fileType}`
 		}));
 		return filePath;
+	}
+
+	async checkFileExists(filePath: string) {
+		try {
+			await this.client.send(new HeadObjectCommand({
+				Bucket: self.B2_BUCKET,
+				Key: filePath,
+			}));
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 
 	getURL(filePath: string) {
