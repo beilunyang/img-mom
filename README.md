@@ -1,112 +1,121 @@
 <div align="center">
 	<img height="180" src="https://pic.otaku.ren/20240320/AQADuroxGzAf2Vd9.jpg" alt="logo" />
-  <h1 align="center">img-mom | 图片老妈</h1>
+  <h1 align="center">img-mom</h1>
   <p align="center">
-		Telegram 图片上传机器人，轻松上传图片到指定图床并获取外链地址
+		Telegram bot for uploading images to image hosting services and getting direct links
   </p>
 
 [![twitter](https://img.shields.io/twitter/follow/beilunyang.svg?label=beilunyang
 )](https://x.com/beilunyang)
 ![wechat2](https://img.shields.io/badge/微信公众号-悖论的技术小屋-brightgreen?style=flat-square)
+
+English . [中文](./README-zh_CN.md)
 </div>
 
-## 特性
-- 基于 Cloudflare Workers 运行时构建, 轻量使用完全免费
-- 支持多种图床（Telegram/Cloudfalre R2/Backblaze B2, 更多图床正在支持中）
-- 快速部署。使用 Wrangler 可快速实现自部署
+## Features
+- Built on Cloudflare Workers runtime, lightweight and completely free to use
+- Supports multiple image hosting services (Telegram/Cloudflare R2/Backblaze B2, with more coming soon)
+- Quick deployment using Wrangler
 
-## 使用方式
-1. 将图片通过私聊发送给 Bot, Bot 默认将只回复对应的 Telegram 图床链接
-2. 发送 `/settings` 指令，可以指定额外的图床，设置完成后，将图片通过私聊发送给 Bot, Bot 将回复你指定的额外图床链接
-3. 可使用 https://t.me/img_mom_bot ， 进行在线体验
+## How to Use
+1. Send images to the Bot via private chat. By default, the Bot will reply with a Telegram image hosting link
+2. Send the `/settings` command to specify additional image hosting services. After setup, the Bot will reply with links to your specified services when you send images
+3. Try it online at https://t.me/img_mom_bot
 ![img-mom](https://pic.otaku.ren/20240212/AQADQ7oxGx0pUVZ9.jpg)
 
-## 自部署
-### 前置条件
-- 该项目使用 NodeJS + TypeScript 开发，需要你的本地环境安装 NodeJS （推荐 NodeJS 20.11.0 以上版本）
-- 该项目最终会部署并运行在 Cloudflare Workers 上，所以需要你拥有一个 Cloudflare 账户。具体可去 Cloudflare 官网注册
-- 该项目是 Telegram 机器人的服务端，所以需要你创建一个 Telegram 机器人。具体如何创建见 Telegram 官方文档 https://core.telegram.org/bots/features#creating-a-new-bot
+## Custom URL Path
+When uploading to additional image hosting services, you can specify a complete URL path (excluding the domain part):
 
-### 部署
-1. 克隆该项目
+1. Send an image with a caption text to specify the path (e.g., `path/to/image.jpg`)
+2. If the specified path already exists, the bot will ask if you want to overwrite the existing image
+3. You can confirm or cancel the upload
+
+## Self-Deployment
+### Prerequisites
+- This project is developed with NodeJS + TypeScript. You need NodeJS installed locally (NodeJS 20.11.0+ recommended)
+- This project runs on Cloudflare Workers, so you need a Cloudflare account (register at Cloudflare's website)
+- This project serves as a Telegram bot backend, so you need to create a Telegram bot. See the Telegram official documentation: https://core.telegram.org/bots/features#creating-a-new-bot
+
+### Deployment
+1. Clone the project
 	```bash
 	git@github.com:beilunyang/img-mom.git
 	cd img-mom
 	```
-2. 安装项目依赖
+2. Install dependencies
 	```bash
 	npm install
 	```
-3. 创建 wrangler 配置文件
+3. Create a wrangler configuration file
 	```
 	cp wrangler.example.toml wrangler.toml
 	```
-4. 编辑新创建的 wrangler.toml 文件
-5. 当编辑完成后，运行
+4. Edit the newly created wrangler.toml file
+5. After editing, run
 	```bash
 	npm run deploy
 	```
-	等待项目编译完成并自动部署到 Cloudflare Workers
+	Wait for the project to compile and deploy to Cloudflare Workers
 
-6. 浏览器打开 `https://<域名>/setup`， 完成必要的 Webhook 初始化
+6. Open `https://<your-domain>/setup` in your browser to complete the necessary Webhook initialization
 
-### Wrangler.toml 待配置项说明
+### Wrangler.toml Configuration
 ```toml
-# 你的 Cloudflare 账户ID
-# 必填
+# Your Cloudflare account ID
+# Required
 account_id = "<string>"
 
 [vars]
-# 填写你创建的 Telegram Bot Token
-# 必填
+# Your Telegram Bot Token
+# Required
 TG_BOT_TOKEN = "<string>"
-# 长度为 1-256 字符，字符集为 A-Z,a-z,0-9,_,- 的字符串，用于防止 Webhook 接口被除当前Telegram Bot以外的应用恶意调用
-# 非必填，但强烈推荐填写
+# A string of length 1-256 with characters A-Z,a-z,0-9,_,- to prevent malicious calls to the Webhook interface
+# Optional but strongly recommended
 TG_WEBHOOK_SECRET_TOKEN = "<string>"
-# Telegram Bot 的所有者用户名
-# 必填
+# Telegram Bot owner's username
+# Required
 TG_BOT_OWNER_USERNAME = "<string>"
-# 是否允许非 Owner 用户使用 Telegram 图床 (注意：即使设置为 true, 非 Owner 用户也不能使用 CloudflareR2/BackblazeB2 图床)
-# 非必填
+# Whether to allow non-owner users to use the Telegram image hosting (Note: even if set to true, non-owner users cannot use CloudflareR2/BackblazeB2)
+# Optional
 TG_BOT_ALLOW_ANYONE = "<boolean>"
 
-# Cloudflare R2 自定义域名
-# 启用 Cloudflare R2 图床时，必填
+# Cloudflare R2 custom domain
+# Required when enabling Cloudflare R2
 R2_CUSTOM_DOMAIN = "<string>"
 # Backblaze B2 keyID
-# 启用 Backblaze B2 图床时，必填
+# Required when enabling Backblaze B2
 B2_KEY_ID = "<string>"
 # Backblaze B2 secretKey
-# 启用 Backblaze B2 图床时，必填
+# Required when enabling Backblaze B2
 B2_SECRET_KEY = "<string>"
 # Backblaze B2 Endpoint
-# 启用 Backblaze B2 图床时，必填
+# Required when enabling Backblaze B2
 B2_ENDPOINT = "<string>"
-# Backblaze B2 Bucket名
-# 启用 Backblaze B2 图床时，必填
+# Backblaze B2 Bucket name
+# Required when enabling Backblaze B2
 B2_BUCKET = "<string>"
-# Backblaze B2 自定义域名
-# 非必填
+# Backblaze B2 custom domain
+# Optional
 B2_CUSTOM_DOMAIN = "<string>"
 
 [[kv_namespaces]]
-# kv ID， 详见 https://developers.cloudflare.com/workers/runtime-apis/kv
-# 必填
+# kv ID, see https://developers.cloudflare.com/workers/runtime-apis/kv
+# Required
 id = "<string>"
 
 [[r2_buckets]]
-# r2 Bucket名，详见 https://developers.cloudflare.com/r2/api/workers/workers-api-usage/
-# 必填
+# r2 Bucket name, see https://developers.cloudflare.com/r2/api/workers/workers-api-usage/
+# Required
 bucket_name = "<string>"
-
 ```
-提示：
-- Backblaze B2 KeyId/SecretKey 可前往 https://secure.backblaze.com/app_keys.htm 获取
-- Backblaze B2 Endpoint/Bucket 可前往 https://secure.backblaze.com/b2_buckets.htm 获取
 
-## GitHub Action 自动部署
+Tips:
+- Backblaze B2 KeyId/SecretKey can be obtained from https://secure.backblaze.com/app_keys.htm
+- Backblaze B2 Endpoint/Bucket can be obtained from https://secure.backblaze.com/b2_buckets.htm
 
-要使用 GitHub Actions 部署 Cloudflare Workers，需要在 GitHub 仓库中设置以下 Secrets：
+## GitHub Action Automatic Deployment
+
+To deploy Cloudflare Workers using GitHub Actions, set up the following Secrets in your GitHub repository:
 
 - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare account ID.
 - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token.
@@ -123,39 +132,36 @@ bucket_name = "<string>"
 - `B2_BUCKET`: The bucket name for your Backblaze B2 storage.
 - `B2_CUSTOM_DOMAIN`: Custom domain for your Backblaze B2 storage.
 
-### 如何设置 Secrets
+### How to Set Up Secrets
 
-1. 访问您的 GitHub 仓库。
-2. 点击 `Settings` > `Secrets and variables` > `Actions` > `New repository secret`（新建仓库密钥）。
-3. 按照上面列出的密钥添加每个 Name 和 Secret 并填入相应的值。
+1. Go to your GitHub repository.
+2. Click `Settings` > `Secrets and variables` > `Actions` > `New repository secret`.
+3. Add each Name and Secret as listed above with the appropriate values.
 
-请确保替换为实际的 Cloudflare 和 Backblaze B2 账户详情。
+Make sure to replace with your actual Cloudflare and Backblaze B2 account details.
 
-配置好后，当推送代码到 master 分支，GitHub Actions 工作流将会使用这些 Secrets 动态生成 wrangler.toml 配置文件并自动部署您的 Cloudflare Worker。
+Once configured, when code is pushed to the master branch, the GitHub Actions workflow will use these Secrets to dynamically generate the wrangler.toml configuration file and automatically deploy your Cloudflare Worker.
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/beilunyang/img-mom)
 
-## 待办项
-- [ ]  英文文档
-- [ ]  更多图床
 
-## 贡献
-1. fork 该项目
-2. 基于 master 分支 checkout 你的开发分支
-3. 配置 wrangler.toml
-4. 安装依赖并本地运行
+## Contributing
+1. Fork this project
+2. Checkout your development branch based on master
+3. Configure wrangler.toml
+4. Install dependencies and run locally
 	```bash
 	npm install
 	npm run dev
-	# 使用 Cloudflare tunnels 进行内网穿透
+	# Use Cloudflare tunnels for network tunneling
 	npm run tunnel
 	```
-	注意：由于该项目是作为 Telegram Bot 的 Webhook 后端，本地运行该项目无法让 Telegram Bot 访问，所以需要进行内网穿透，让本地运行的服务能够通过外网访问。（推荐使用 Cloudflare tunnels 进行免费内网穿透，当然也可以使用 ngrok 等服务）
-5. 浏览器打开 `https://<域名>/setup`， 完成必要的 Webhook 初始化
-6. 编写代码并测试
-7. 发送 PR, 等待合并
+	Note: Since this project serves as a Telegram Bot Webhook backend, running locally doesn't allow Telegram Bot access, so you need network tunneling to make your locally running service accessible via the internet. (Cloudflare tunnels is recommended for free network tunneling, but you can also use services like ngrok)
+5. Open `https://<your-domain>/setup` in your browser to complete the necessary Webhook initialization
+6. Write code and test
+7. Submit a PR and wait for merging
 
-## 赞助
+## Sponsorship
 <img src="https://pic.otaku.ren/20240212/AQADPrgxGwoIWFZ-.jpg" style="width: 400px;"/>
 <br />
 <a href="https://www.buymeacoffee.com/beilunyang" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="width: 400px;" ></a>
